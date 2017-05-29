@@ -1,0 +1,27 @@
+package com.musicode.criminalintent.detail;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+
+import com.musicode.criminalintent.SingleFragmentActivity;
+
+import java.util.UUID;
+
+public class DetailActivity extends SingleFragmentActivity {
+
+    private static final String EXTRA_CRIME_ID = "crime_id";
+
+    @Override
+    protected Fragment createFragment() {
+        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        return DetailFragment.newInstance(crimeId);
+    }
+
+    public static Intent newIntent(Context context, UUID crimeId) {
+        Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra(EXTRA_CRIME_ID, crimeId);
+        return intent;
+    }
+
+}
