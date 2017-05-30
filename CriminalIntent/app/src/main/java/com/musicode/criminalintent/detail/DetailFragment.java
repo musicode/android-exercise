@@ -1,5 +1,7 @@
 package com.musicode.criminalintent.detail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,17 +14,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.musicode.criminalintent.R;
 import com.musicode.criminalintent.model.Crime;
 import com.musicode.criminalintent.model.CrimeLab;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class DetailFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
+
+    private static final String TAG_DATE_PICKER_DIALOG = "date_picker_dialog";
+
+    private static final int REQUEST_CODE_DATE = 1;
 
     private Crime mCrime;
 
@@ -78,13 +86,14 @@ public class DetailFragment extends Fragment {
             }
         });
 
-        mDateButton.setText(DateFormat.format("yyyy/MM/dd", mCrime.getDate()));
+        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
-                dialog.show(fm, "DATE");
+                DatePickerFragment fragment = DatePickerFragment.newInstance(mCrime.getDate());
+                fragment.setTargetFragment(DetailFragment.this, REQUEST_CODE_DATE);
+                fragment.show(fm, TAG_DATE_PICKER_DIALOG);
             }
         });
 
@@ -99,4 +108,20 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != REQUEST_CODE_DATE) {
+            return;
+        }
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+        mCrime.setDate(date);
+        updateDate();
+    }
+
+    private void updateDate() {
+        mDateButton.setText(DateFormat.format("yyyy/MM/dd", mCrime.getDate()));
+    }
 }

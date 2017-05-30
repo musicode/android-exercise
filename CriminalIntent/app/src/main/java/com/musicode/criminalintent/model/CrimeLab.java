@@ -11,12 +11,6 @@ public class CrimeLab {
 
     private CrimeLab() {
         list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Crime crime = new Crime();
-            crime.setTitle("title" + i);
-            crime.setSolved(i % 2 == 0);
-            list.add(crime);
-        }
     }
 
     public static CrimeLab getInstance() {
@@ -37,6 +31,10 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    public void add(Crime crime) {
+        list.add(crime);
     }
 
 }
