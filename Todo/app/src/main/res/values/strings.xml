@@ -5,4 +5,7 @@
     <string name="edit_task">Edit Task</string>
     <string name="title_edit_view_hint">Title</string>
     <string name="content_edit_view_hint">Enter your TO-DO here.</string>
+
+    <string name="no_tasks_text">You have no TO-DOs!</string>
+
 </resources>
