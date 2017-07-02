@@ -1,5 +1,9 @@
 package com.musicode.todo.tasklist;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.musicode.todo.R;
 
 public class TaskListActivity extends AppCompatActivity {
 
+    private DrawerLayout mDrawerLayout;
     private ActionBar mToolbar;
 
     @Override
@@ -30,7 +36,20 @@ public class TaskListActivity extends AppCompatActivity {
         mToolbar.setHomeAsUpIndicator(R.drawable.ic_menu);
         mToolbar.setDisplayHomeAsUpEnabled(true);
 
-        mToolbar.setTitle("hahah哈");
+        mToolbar.setTitle("标题");
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -43,6 +62,9 @@ public class TaskListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
             case R.id.menu_filter:
                 showFilteringPopupMenu();
                 break;
